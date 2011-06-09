@@ -219,7 +219,7 @@
     <span class="invoice-terms">
         <xsl:variable name="valuetype" select="PaymentMeans"/>
         <xsl:value-of
-        select="document('PaymentMeansCodeAEAT-1.0.gc')//SimpleCodeList[1]/Row/Value[@ColumnRef='code']/SimpleValue[.=$valuetype]/../../Value[@ColumnRef=$lang]/SimpleValue"/>
+        select="document('/plugin_assets/haltr/xsl/PaymentMeansCodeAEAT-1.0.gc')//SimpleCodeList[1]/Row/Value[@ColumnRef='code']/SimpleValue[.=$valuetype]/../../Value[@ColumnRef=$lang]/SimpleValue"/>
         <xsl:value-of select="concat(' ',(AccountToBeDebited|AccountToBeCredited)/AccountNumber)"/></span><br/>
 </xsl:template>
     
@@ -240,7 +240,7 @@
     <xsl:variable name="valuetype"><xsl:value-of select="TaxTypeCode"/></xsl:variable>
     <tr class="sales-tax">
         <th><xsl:value-of
-            select="document('TaxCodeAEAT-1.0.gc')//SimpleCodeList[1]/Row/Value[@ColumnRef='code']/SimpleValue[.=$valuetype]/../../Value[@ColumnRef=$lang]/SimpleValue"/>
+            select="document('/plugin_assets/haltr/xsl/TaxCodeAEAT-1.0.gc')//SimpleCodeList[1]/Row/Value[@ColumnRef='code']/SimpleValue[.=$valuetype]/../../Value[@ColumnRef=$lang]/SimpleValue"/>
             <xsl:value-of select="concat(' ',format-number(TaxRate,'#'),'%')"/>:</th>
         
         <td><xsl:value-of select="TaxAmount/TotalAmount"/></td>
