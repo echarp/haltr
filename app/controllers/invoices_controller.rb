@@ -300,7 +300,6 @@ class InvoicesController < ApplicationController
 
   def view
     @lines = @invoice.invoice_lines
-    @client = @invoice.client || Client.new(:name=>"unknown",:country=>"ES",:taxcode=>"EUR",:project=>@invoice.project)
     render :layout=>"public"
   rescue
     render_404
@@ -340,6 +339,10 @@ class InvoicesController < ApplicationController
   def find_hashid
     Project.send(:include, ProjectHaltrPatch) #TODO: perque nomes funciona el primer cop sense aixo?
     @client = Client.find_by_hashid params[:id]
+    if @client.nil?
+      render_404
+      return
+    end
     @company = @client.project.company
     invoices = IssuedInvoice.find(:all, :conditions => ["client_id=? AND id=?",@client.id,params[:invoice_id]])
     if invoices.size != 1
@@ -360,10 +363,12 @@ class InvoicesController < ApplicationController
   end
 
   def find_invoice
+    Project.send(:include, ProjectHaltrPatch) #TODO: perque nomes funciona el primer cop sense aixo?
     @invoice = InvoiceDocument.find params[:id]
     @lines = @invoice.invoice_lines
     @client = @invoice.client || Client.new(:name=>"unknown",:country=>"ES",:taxcode=>"EUR",:project=>@invoice.project)
     @project = @invoice.project
+    @company = @project.company
   rescue ActiveRecord::RecordNotFound
     render_404
   end
